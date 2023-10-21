@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">project</string>
+    <string name="defaultMACAddress">XX:XX:XX:XX:XX:XX:XX</string>
 </resources>

@@ -33,11 +33,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.example.project.common.AppBar
+import com.example.project.signal.SignalForm
 import com.example.project.ui.theme.ProjectTheme
 import com.example.project.user.UserScreen
 import com.example.project.user.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +49,8 @@ class MainActivity : ComponentActivity() {
             ProjectTheme() {
                 Drawer()
 
-                val test = applicationContext
-                val ka = ViewModelProvider(this).get(UserViewModel::class.java)
+                //val test = applicationContext
+                //val ka = ViewModelProvider(this).get(UserViewModel::class.java)
 
 
 
@@ -58,6 +61,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//todo pakeisti appbar title su page kuriame esu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -135,7 +139,9 @@ fun Drawer() {
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
-                UserScreen(modifier = Modifier.padding(top = 40.dp))
+                //UserScreen(modifier = Modifier.padding(top = 40.dp))
+                SignalForm(modifier = Modifier.padding(top = 40.dp))
+
             }
         }
     }
