@@ -6,20 +6,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.project.data.entities.Signal
-import com.example.project.data.entities.User
 import com.example.project.data.repositories.SignalRepository
-import com.example.project.data.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignalEntryViewModel @Inject constructor(private val signalRepository: SignalRepository,
-    private val userRepository: UserRepository): ViewModel() {
+class SignalUpdateViewModel @Inject constructor
+    (private val signalRepository: SignalRepository): ViewModel() {
 
     var signalState by mutableStateOf(
         Signal(0, "", Int.MIN_VALUE, Int.MIN_VALUE, Int.MIN_VALUE))
@@ -28,14 +24,9 @@ class SignalEntryViewModel @Inject constructor(private val signalRepository: Sig
     private val _validationState = mutableStateListOf<Field>()
     val validationState: List<Field> = _validationState
 
-
-    //TODO pamąstyti dėl neužsetinto MAC adreso, ar jei dar nespėjo pafetchinti
-    init {
+    fun getSignal(id: Int) {
         viewModelScope.launch {
-            val user = userRepository.getUsers().map { it.firstOrNull() }.first()
-            if (user != null) {
-                signalState = signalState.copy(macAddress = user.macAddress)
-            }
+            signalState = signalRepository.getSignal(id).first()
         }
     }
 
@@ -79,7 +70,7 @@ class SignalEntryViewModel @Inject constructor(private val signalRepository: Sig
         }
     }
 
-    fun insertSignal() {
+    fun updateSignal() {
         var isValid: Boolean = true
 
         if (signalState.sensor1 == Int.MIN_VALUE) {
@@ -98,7 +89,12 @@ class SignalEntryViewModel @Inject constructor(private val signalRepository: Sig
         }
 
         if (isValid) {
-            viewModelScope.launch { signalRepository.insertSignal(signalState) }
+            viewModelScope.launch { signalRepository.updateSignal(signalState) }
         }
     }
+
+
+
+
+
 }

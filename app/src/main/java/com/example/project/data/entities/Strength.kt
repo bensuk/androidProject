@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class Strength(
     @PrimaryKey val id: Int,
     @ColumnInfo(name = "measurement") val measurement: Int,
-    @ColumnInfo(name = "sensor") val sensor: String,
-    @ColumnInfo(name = "strength") val strength: Int
+    @ColumnInfo(name = "strength1") val strength1: Int,
+    @ColumnInfo(name = "strength2") val strength2: Int,
+    @ColumnInfo(name = "strength3") val strength3: Int
 )

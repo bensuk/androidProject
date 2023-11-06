@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.project.data.AppDatabase
 import com.example.project.data.entities.User
 import com.example.project.data.repositories.UserRepository
+import com.example.project.signal.Field
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -26,15 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(private val userRepository: UserRepository): ViewModel() {
 
-//    val userState: StateFlow<User?> = userRepository.getUsers()
-//        .map { it.firstOrNull() }
-//        .stateIn(
-//            scope = viewModelScope,
-//            started = SharingStarted.WhileSubscribed(5000),
-//            initialValue = User(0, "XX:XX:XX:XX:XX:XX:XX")
-//        )
-
-    var userState by mutableStateOf(User(0, "XX:XX:XX:XX:XX:XX:XX"))
+    var userState by mutableStateOf(User(0, "XX:XX:XX:XX:XX:XX"))
         private set
 
     private var shouldUpdate: Boolean = false
@@ -50,7 +43,10 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
     }
 
     fun updateMACAddressState(mac: String){
-        userState = userState.copy(macAddress = mac)
+        print(mac.count { it != ':' })
+        if (mac.count { it != ':' } <= 12) {
+            userState = userState.copy(macAddress = mac)
+        }
     }
 
     private fun insertUser(user: User) = viewModelScope.launch {
@@ -58,6 +54,21 @@ class UserViewModel @Inject constructor(private val userRepository: UserReposito
     }
 
     fun updateUser(user: User) = viewModelScope.launch {
-        if (shouldUpdate) userRepository.updateUser(user) else insertUser(user)
+        var count: Int = 0
+        var formattedMac: String = ""
+
+        for (char in user.macAddress.filter { it.isLetter() || it.isDigit() }) {
+            if (count % 2 == 0 && count != 0) {
+                formattedMac += ":$char"
+            }
+            else {
+                formattedMac += char
+            }
+
+            count ++
+        }
+
+        if (shouldUpdate) userRepository.updateUser(user.copy(macAddress = formattedMac))
+            else insertUser(user.copy(macAddress = formattedMac))
     }
 }

@@ -14,7 +14,9 @@ interface SignalDao {
     @Query("SELECT * FROM Signal")
     fun getSignals(): Flow<List<Signal>>
 
-    // TODO gal sito ir nereikes, nemanau kad reikes kitu vartotoju signalu
+    @Query("SELECT * FROM Signal WHERE id = :id")
+    fun getSignal(id: Int): Flow<Signal>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(signals: List<Signal>)
 

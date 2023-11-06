@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class Signal(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "mac_address") val macAddress: String,
-    @ColumnInfo(name = "sensor1") val sensor1: String,
-    @ColumnInfo(name = "sensor2") val sensor2: String,
-    @ColumnInfo(name = "sensor3") val sensor3: String,
+    @ColumnInfo(name = "sensor1") val sensor1: Int,
+    @ColumnInfo(name = "sensor2") val sensor2: Int,
+    @ColumnInfo(name = "sensor3") val sensor3: Int,
 )

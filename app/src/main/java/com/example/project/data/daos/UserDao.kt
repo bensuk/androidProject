@@ -10,14 +10,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
-    // TODO CHECK IF WORKS, WAS List<User>
-    // TODO MAYBE ADD NULLABLE
-
-    //TODO so do i need List or should i use it like Flow<User>
     @Query("SELECT * FROM user")
     fun getUser(): Flow<List<User>>
 
-    //TODO not sure if i should keep vararg
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: User)
 

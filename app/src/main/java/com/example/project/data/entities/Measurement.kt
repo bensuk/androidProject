@@ -8,6 +8,6 @@ import androidx.room.PrimaryKey
 data class Measurement(
     @PrimaryKey val measurement: Int,
     @ColumnInfo(name = "x") val x: Int,
-    @ColumnInfo(name = "y") val y: Int,
-    @ColumnInfo(name = "distance") val distance: Float
+    @ColumnInfo(name = "y") val y: Int/*,
+    @ColumnInfo(name = "distance") val distance: Float*/
 )

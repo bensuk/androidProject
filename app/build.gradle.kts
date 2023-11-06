@@ -115,9 +115,20 @@ dependencies {
 
 
 
+
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
 
     implementation("androidx.lifecycle:lifecycle-livedata:$lifecycle_version")
+
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
 
 
 
