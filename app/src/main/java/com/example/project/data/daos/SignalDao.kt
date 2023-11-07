@@ -21,7 +21,7 @@ interface SignalDao {
     suspend fun insertAll(signals: List<Signal>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOne(signal: Signal)
+    suspend fun insertOne(signal: Signal) : Long
 
     @Delete
     suspend fun deleteSignal(signal: Signal)

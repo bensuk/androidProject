@@ -16,6 +16,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.project.common.Drawer
+import com.example.project.location.LocationList
+import com.example.project.location.LocationListDestination
+import com.example.project.map.Map
+import com.example.project.map.MapDestination
 import com.example.project.signal.AddSignalDestination
 import com.example.project.signal.SignalForm
 import com.example.project.signal.SignalList
@@ -35,7 +39,8 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
         modifier = Modifier.width(300.dp),
         userNavigate = { navController.navigate(route = UserDestination.route) },
         signalNavigate = { navController.navigate(route = SignalListDestination.route) },
-        mapNavigate = { /*navController.navigate(route = UserDestination.route)*/ },
+        mapNavigate = { navController.navigate(route = MapDestination.route) },
+        locationsNavigate = { navController.navigate(route = LocationListDestination.route) },
         route = currentBackStack?.destination?.route,
         drawerState = drawerState
     ) {
@@ -74,6 +79,18 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
                     drawerState = drawerState,
                     titleRes = UpdateSignalDestination.titleRes,
                     signalId = it.arguments?.getInt(UpdateSignalDestination.itemIdArg)?: 0 //todo handle if 0
+                )
+            }
+            composable(route = MapDestination.route) {
+                Map(
+                    drawerState = drawerState,
+                    titleRes = MapDestination.titleRes
+                )
+            }
+            composable(route = LocationListDestination.route) {
+                LocationList(
+                    drawerState = drawerState,
+                    titleRes = LocationListDestination.titleRes
                 )
             }
         }

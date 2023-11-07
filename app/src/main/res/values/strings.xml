@@ -9,6 +9,8 @@
     <string name="signalList_destination">Signalų stiprumai</string>
     <string name="addSignal_destination">Signalų pridėjimas</string>
     <string name="updateSignal_destination">Signalų redagavimas</string>
+    <string name="map_destination">Vartotojo žemėlapis</string>
+    <string name="locationList_destination">Nustatytų vietų adresai</string>
 
     <string name="signal_addedNotification">Signalai buvo pridėti</string>
     <string name="signal_updatedNotification">Signalai buvo pakeisti</string>
@@ -17,5 +19,6 @@
     <string name="drawer_user">Vartotojo identifikacija</string>
     <string name="drawer_signal">Signalų stiprumų sąrašas</string>
     <string name="drawer_map">Signalų žemėlapis</string>
+    <string name="drawer_location">Nustatytų vietų sąrašas</string>
 
 </resources>

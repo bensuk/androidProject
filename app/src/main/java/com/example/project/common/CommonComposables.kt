@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.project.R
+import com.example.project.location.LocationListDestination
+import com.example.project.map.MapDestination
 import com.example.project.signal.SignalListDestination
 import com.example.project.user.UserDestination
 
@@ -51,6 +53,7 @@ fun Drawer(
     userNavigate: () -> Unit,
     signalNavigate: () -> Unit,
     mapNavigate: () -> Unit,
+    locationsNavigate: () -> Unit,
     route: String?,
     drawerState: DrawerState,
     content: @Composable () -> Unit
@@ -77,8 +80,13 @@ fun Drawer(
                 )
                 NavigationDrawerItem(
                     label = { Text(text = stringResource(R.string.drawer_map)) },
-                    selected = false/*route == UserDestination.route*/,
+                    selected = route == MapDestination.route,
                     onClick = mapNavigate
+                )
+                NavigationDrawerItem(
+                    label = { Text(text = stringResource(R.string.drawer_location)) },
+                    selected = route == LocationListDestination.route,
+                    onClick = locationsNavigate
                 )
             }
         },

@@ -1,13 +1,9 @@
 package com.example.project
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import com.example.project.data.entities.Measurement
 import com.example.project.data.entities.Strength
 import com.example.project.data.repositories.MeasurementRepository
-import com.example.project.data.repositories.SignalRepository
 import com.example.project.data.repositories.StrengthRepository
-import com.example.project.data.repositories.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -35,13 +31,12 @@ interface ApiService  {
     @GET("strengths/")
     suspend fun getAllStrengths(): Response<List<StrengthResponse>>
 
-
     @GET("measurements/")
     suspend fun getAllMeasurements(): Response<List<MeasurementResponse>>
 }
 
 class ApiServiceClass @Inject constructor(private val measurementRepository: MeasurementRepository,
-                                     strengthRepository: StrengthRepository) {
+                                     private val strengthRepository: StrengthRepository) {
     suspend fun fetchData() {
 
         val API_URL = "http://10.0.2.2:5273/api/seklys/"
@@ -68,13 +63,16 @@ class ApiServiceClass @Inject constructor(private val measurementRepository: Mea
                             temp.add(strength.strength)
                             if (count % 3 == 0) {
                                 list.add(Strength(
-                                    0, strength.measurement, temp[0], temp[1], temp[2]))
+                                    strength.id/3, strength.measurement, temp[0], temp[1], temp[2]))
                                 temp.clear()
                             }
                             count++
                         }
+                        strengthRepository.insertAllStrengths(list.toList())
                     }
-                    Log.i("first", list.last().toString())
+                    else {
+                        throw Exception("couldn't get strengths")
+                    }
                 }
 
                 async {
@@ -88,13 +86,16 @@ class ApiServiceClass @Inject constructor(private val measurementRepository: Mea
                             list.add(Measurement
                                 (measurement.measurement, measurement.x, measurement.y))
                         }
+                        measurementRepository.insertAll(list.toList())
                     }
-                    Log.i("second", list.last().toString())
+                    else {
+                        throw Exception("couldn't get measurements")
+                    }
                 }
             }
         }
         catch (e: Exception) {
-            Log.w("fetchData", e)
+            throw Exception(e)
         }
     }
 }

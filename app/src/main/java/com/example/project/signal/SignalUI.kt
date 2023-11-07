@@ -26,7 +26,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -45,6 +44,8 @@ import com.example.project.common.AppBar
 import com.example.project.common.toast
 import com.example.project.data.entities.Signal
 import com.example.project.navigation.NavigationDestination
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 object SignalListDestination : NavigationDestination {
@@ -141,7 +142,10 @@ fun SignalForm(
                     isError = validationState.contains(Field.Signal3)
                 )
                 Button(onClick = {
-                    viewModel.insertSignal()
+
+                    CoroutineScope(Dispatchers.Default).launch { viewModel.insertSignal() }
+                    //viewModel.insertSignal()
+
                     focusManager.clearFocus()
                     if (validationState.isEmpty()) {
                         toast(
@@ -304,7 +308,9 @@ fun SignalUpdateForm(
     ) { innerPadding ->
         Surface(
             color = MaterialTheme.colorScheme.background,
-            modifier = Modifier.fillMaxSize().padding(innerPadding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
 
             val signalsState: Signal = viewModel.signalState

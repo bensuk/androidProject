@@ -6,9 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.project.UserLocation
 import com.example.project.data.entities.Signal
-import com.example.project.data.entities.User
 import com.example.project.data.repositories.SignalRepository
 import com.example.project.data.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +17,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignalEntryViewModel @Inject constructor(private val signalRepository: SignalRepository,
-    private val userRepository: UserRepository): ViewModel() {
+class SignalEntryViewModel @Inject constructor(
+    private val signalRepository: SignalRepository,
+    private val userRepository: UserRepository,
+    private val userLocation: UserLocation
+    ): ViewModel() {
 
     var signalState by mutableStateOf(
         Signal(0, "", Int.MIN_VALUE, Int.MIN_VALUE, Int.MIN_VALUE))
@@ -37,6 +39,7 @@ class SignalEntryViewModel @Inject constructor(private val signalRepository: Sig
                 signalState = signalState.copy(macAddress = user.macAddress)
             }
         }
+
     }
 
     fun updateSignalState(signal: String, field: Field) {
@@ -79,7 +82,7 @@ class SignalEntryViewModel @Inject constructor(private val signalRepository: Sig
         }
     }
 
-    fun insertSignal() {
+    suspend fun insertSignal() {
         var isValid: Boolean = true
 
         if (signalState.sensor1 == Int.MIN_VALUE) {
@@ -98,7 +101,8 @@ class SignalEntryViewModel @Inject constructor(private val signalRepository: Sig
         }
 
         if (isValid) {
-            viewModelScope.launch { signalRepository.insertSignal(signalState) }
+            val id = signalRepository.insertSignal(signalState)
+            userLocation.addLocation(signalState.copy(id = id.toInt()))
         }
     }
 }
